@@ -1,1 +1,16 @@
-gradle/ext/
+classes/
+build/
+target/
+/out/
+
+logs/
+
+.idea_modules/
+.idea/*
+*.ipr
+*.iws
+*.iml
+
+*.DS_Store
+.gradle
+!gradle-wrapper.jar

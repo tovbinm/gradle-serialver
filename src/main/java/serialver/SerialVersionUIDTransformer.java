@@ -67,7 +67,7 @@ public class SerialVersionUIDTransformer extends ClassTransformer {
 
             if (!hasSerialVersionUIDField(clazz)) {
                 CtField field = new CtField(CtClass.longType, SERIALVERSIONUID_FIELD_NAME, clazz);
-                field.setModifiers(javassist.Modifier.STATIC | javassist.Modifier.PRIVATE | javassist.Modifier.FINAL);
+                field.setModifiers(javassist.Modifier.PUBLIC | javassist.Modifier.STATIC | javassist.Modifier.FINAL);
                 if (forceUIDOnException && isException(clazz)) {
                     clazz.addField(field, javassist.CtField.Initializer.constant(1L));
                 } else {
@@ -83,7 +83,8 @@ public class SerialVersionUIDTransformer extends ClassTransformer {
         try {
             return isClass(clazz) && isSerializable(clazz);
         } catch (NotFoundException e) {
-            throw new JavassistBuildException(e);
+            // throw new JavassistBuildException(e);
+            return false;
         }
     }
 

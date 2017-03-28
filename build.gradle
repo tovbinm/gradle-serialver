@@ -1,9 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 group 'org.ow2.proactive'
-version '2.2'
+version '2.2.1'
 
 repositories {
     jcenter()
@@ -40,10 +41,18 @@ buildscript {
     }
 
     dependencies {
-            classpath "com.diffplug.gradle.spotless:spotless:2.4.0"
+        classpath "com.diffplug.gradle.spotless:spotless:2.4.0"
         classpath "org.ow2.proactive:coding-rules:1.0.0"
         delete "gradle/ext"
         ant.unjar src: configurations.classpath.find { it.name.startsWith("coding-rules") }, dest: 'gradle/ext'
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
     }
 }
 
