@@ -4,7 +4,7 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group 'org.ow2.proactive'
-version '2.2.1'
+version '2.2.2'
 
 repositories {
     jcenter()
@@ -13,6 +13,8 @@ repositories {
 dependencies {
     compile gradleApi()
     compile 'com.darylteo.gradle:javassist-plugin:0.4.1'
+    testCompile 'junit:junit:4.12'
+    testCompile 'commons-io:commons-io:2.4'
 }
 
 uploadArchives {
@@ -32,7 +34,7 @@ uploadArchives {
 
 buildscript {
     repositories {
-            maven {
+        maven {
               url "https://plugins.gradle.org/m2/"
         }
         maven {

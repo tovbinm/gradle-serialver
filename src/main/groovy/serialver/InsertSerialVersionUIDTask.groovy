@@ -1,9 +1,11 @@
 package serialver
 
-import com.darylteo.gradle.javassist.tasks.TransformationTask
+import com.darylteo.gradle.javassist.tasks.IncrementalTransformationTask
+import com.darylteo.gradle.javassist.tasks.TransformationAction
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.incremental.IncrementalTaskInputs
 
-public class InsertSerialVersionUIDTask extends TransformationTask {
+public class InsertSerialVersionUIDTask extends IncrementalTransformationTask {
 
     def serialver
     def overwrite = true
@@ -15,7 +17,11 @@ public class InsertSerialVersionUIDTask extends TransformationTask {
     }
 
     @TaskAction
-    public void exec() {
+    public void exec(IncrementalTaskInputs inputs) {
+        if (!inputs.incremental) {
+            project.delete(getDestinationDir().listFiles())
+        }
+
         classpath += project.configurations.compile
         def serialVerAsLong
         if (serialver instanceof String) {
@@ -28,9 +34,10 @@ public class InsertSerialVersionUIDTask extends TransformationTask {
 
         // in place transformation
         from(project.sourceSets.main.output[0])
-        into(project.sourceSets.main.output[0])
+        //into(project.sourceSets.main.output[0])
+        // ^ let users configure where to copy serialver classes into
 
-        super.exec()
+        super.exec(inputs)
     }
 
 }

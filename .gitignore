@@ -14,3 +14,4 @@ logs/
 *.DS_Store
 .gradle
 !gradle-wrapper.jar
+gradle/ext/
