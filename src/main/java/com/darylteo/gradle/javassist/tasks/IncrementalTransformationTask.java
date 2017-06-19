@@ -25,25 +25,22 @@
  */
 package com.darylteo.gradle.javassist.tasks;
 
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.*;
-
+import com.darylteo.gradle.javassist.transformers.GroovyClassTransformation;
+import groovy.lang.Closure;
 import javassist.build.IClassTransformer;
-
-import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.ConfigurableFileTree;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.OutputDirectory;
-import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.incremental.IncrementalTaskInputs;
-import org.gradle.api.tasks.incremental.InputFileDetails;
 
-import com.darylteo.gradle.javassist.transformers.GroovyClassTransformation;
-
-import groovy.lang.Closure;
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 
 /**

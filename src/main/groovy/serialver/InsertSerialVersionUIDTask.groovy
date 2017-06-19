@@ -1,18 +1,25 @@
 package serialver
 
 import com.darylteo.gradle.javassist.tasks.IncrementalTransformationTask
-import com.darylteo.gradle.javassist.tasks.TransformationAction
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.incremental.IncrementalTaskInputs
 
 public class InsertSerialVersionUIDTask extends IncrementalTransformationTask {
 
+    @Input
     def serialver
+
+    @Input
     def overwrite = true
+
+    @Input
     def forceUIDOnException = false
 
     InsertSerialVersionUIDTask() {
         dependsOn(project.classes)
+        from(project.sourceSets.main.output.classesDir)
+        classpath += project.configurations.compile
         project.jar.mustRunAfter(this)
     }
 
@@ -22,7 +29,6 @@ public class InsertSerialVersionUIDTask extends IncrementalTransformationTask {
             project.delete(getDestinationDir().listFiles())
         }
 
-        classpath += project.configurations.compile
         def serialVerAsLong
         if (serialver instanceof String) {
             serialVerAsLong = Long.parseLong(serialver.replaceAll('L', '').replaceAll('l', ''))
@@ -31,11 +37,6 @@ public class InsertSerialVersionUIDTask extends IncrementalTransformationTask {
         }
 
         setTransformation(new SerialVersionUIDTransformer(serialVerAsLong, overwrite, forceUIDOnException))
-
-        // in place transformation
-        from(project.sourceSets.main.output[0])
-        //into(project.sourceSets.main.output[0])
-        // ^ let users configure where to copy serialver classes into
 
         super.exec(inputs)
     }
