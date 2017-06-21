@@ -45,19 +45,22 @@ public class SerialVersionUIDTransformer extends ClassTransformer {
 
     private boolean forceUIDOnException;
 
+    private boolean copyAll;
+
     public SerialVersionUIDTransformer(long serialVersionUIDValue) {
-        this(serialVersionUIDValue, true, false);
+        this(serialVersionUIDValue, true, false, false);
     }
 
-    public SerialVersionUIDTransformer(long serialVersionUIDValue, boolean overwrite, boolean forceUIDOnException) {
+    public SerialVersionUIDTransformer(long serialVersionUIDValue, boolean overwrite, boolean forceUIDOnException, boolean copyAll) {
         this.serialVersionUIDValue = serialVersionUIDValue;
         this.overwrite = overwrite;
         this.forceUIDOnException = forceUIDOnException;
+        this.copyAll = copyAll;
     }
 
     public void applyTransformations(CtClass clazz) throws JavassistBuildException {
         try {
-            if (shouldModify(clazz)) {
+            if (!copyAll || shouldModify(clazz)) {
                 if (hasSerialVersionUIDField(clazz)) {
                     if (overwrite || (forceUIDOnException && isException(clazz))) {
                         // replace existing serialVersionUID
@@ -90,7 +93,7 @@ public class SerialVersionUIDTransformer extends ClassTransformer {
     }
 
     public boolean shouldTransform(CtClass clazz) throws JavassistBuildException {
-        return true;
+        return copyAll || shouldModify(clazz);
     }
 
     private boolean isException(CtClass clazz) throws NotFoundException {

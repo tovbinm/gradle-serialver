@@ -16,6 +16,9 @@ public class InsertSerialVersionUIDTask extends IncrementalTransformationTask {
     @Input
     def forceUIDOnException = false
 
+    @Input
+    def copyAll = true
+
     InsertSerialVersionUIDTask() {
         dependsOn(project.classes)
         from(project.sourceSets.main.output.classesDir)
@@ -36,7 +39,7 @@ public class InsertSerialVersionUIDTask extends IncrementalTransformationTask {
             serialVerAsLong = serialver
         }
 
-        setTransformation(new SerialVersionUIDTransformer(serialVerAsLong, overwrite, forceUIDOnException))
+        setTransformation(new SerialVersionUIDTransformer(serialVerAsLong, overwrite, forceUIDOnException, copyAll))
 
         super.exec(inputs)
     }
