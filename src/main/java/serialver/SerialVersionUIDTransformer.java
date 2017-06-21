@@ -57,21 +57,22 @@ public class SerialVersionUIDTransformer extends ClassTransformer {
 
     public void applyTransformations(CtClass clazz) throws JavassistBuildException {
         try {
-
-            if (hasSerialVersionUIDField(clazz)) {
-                if (overwrite || (forceUIDOnException && isException(clazz))) {
-                    // replace existing serialVersionUID
-                    clazz.removeField(clazz.getField(SERIALVERSIONUID_FIELD_NAME));
+            if (shouldModify(clazz)) {
+                if (hasSerialVersionUIDField(clazz)) {
+                    if (overwrite || (forceUIDOnException && isException(clazz))) {
+                        // replace existing serialVersionUID
+                        clazz.removeField(clazz.getField(SERIALVERSIONUID_FIELD_NAME));
+                    }
                 }
-            }
 
-            if (!hasSerialVersionUIDField(clazz)) {
-                CtField field = new CtField(CtClass.longType, SERIALVERSIONUID_FIELD_NAME, clazz);
-                field.setModifiers(javassist.Modifier.PUBLIC | javassist.Modifier.STATIC | javassist.Modifier.FINAL);
-                if (forceUIDOnException && isException(clazz)) {
-                    clazz.addField(field, javassist.CtField.Initializer.constant(1L));
-                } else {
-                    clazz.addField(field, javassist.CtField.Initializer.constant(serialVersionUIDValue));
+                if (!hasSerialVersionUIDField(clazz)) {
+                    CtField field = new CtField(CtClass.longType, SERIALVERSIONUID_FIELD_NAME, clazz);
+                    field.setModifiers(javassist.Modifier.PUBLIC | javassist.Modifier.STATIC | javassist.Modifier.FINAL);
+                    if (forceUIDOnException && isException(clazz)) {
+                        clazz.addField(field, javassist.CtField.Initializer.constant(1L));
+                    } else {
+                        clazz.addField(field, javassist.CtField.Initializer.constant(serialVersionUIDValue));
+                    }
                 }
             }
         } catch (Exception e) {
@@ -79,13 +80,17 @@ public class SerialVersionUIDTransformer extends ClassTransformer {
         }
     }
 
-    public boolean shouldTransform(CtClass clazz) throws JavassistBuildException {
+    private boolean shouldModify(CtClass clazz) throws JavassistBuildException {
         try {
             return isClass(clazz) && isSerializable(clazz);
         } catch (NotFoundException e) {
             // throw new JavassistBuildException(e);
             return false;
         }
+    }
+
+    public boolean shouldTransform(CtClass clazz) throws JavassistBuildException {
+        return true;
     }
 
     private boolean isException(CtClass clazz) throws NotFoundException {
