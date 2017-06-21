@@ -137,12 +137,18 @@ public class IncrementalTransformationTask extends DefaultTask {
             classPath.add(this.getProject().file(classesDir));
         }
 
-        boolean workDone = new TransformationAction(this.getDestinationDir(),
-                                                    outOfDate,
-                                                    classPath,
-                                                    this.transformation).execute();
+        if (outOfDate.isEmpty()) {
+            this.setDidWork(false);
+        } else {
+            boolean workDone = new TransformationAction(
+                    this.getDestinationDir(),
+                    outOfDate,
+                    classPath,
+                    this.transformation
+            ).execute();
 
-        this.setDidWork(workDone);
+            this.setDidWork(workDone);
+        }
     }
 
 }
