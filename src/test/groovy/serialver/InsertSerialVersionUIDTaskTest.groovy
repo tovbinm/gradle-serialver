@@ -29,6 +29,7 @@ public class InsertSerialVersionUIDTaskTest {
             serialver = '42L'
             overwrite = true
             forceUIDOnException = forceException
+            into("$project.buildDir/serialver")
         }
 
         createSerializableJavaSource(project)
@@ -69,6 +70,7 @@ public class InsertSerialVersionUIDTaskTest {
             serialver = '42L'
             overwrite = overwrt
             forceUIDOnException = forcethrow
+            into("$project.buildDir/serialver")
         }
 
         createSerializableJavaSourceWithSerialVersionUID(project)
@@ -88,6 +90,7 @@ public class InsertSerialVersionUIDTaskTest {
 
         project.task("serialver", type: InsertSerialVersionUIDTask.class) {
             serialver = '42L'
+            into("$project.buildDir/serialver")
         }
 
         createSerializableJavaSourceWithSerialVersionUID(project)
@@ -138,13 +141,13 @@ public class InsertSerialVersionUIDTaskTest {
 
     private CtClass getCompiledSerialzableClass(Project project) {
         ClassPool pool = ClassPool.getDefault();
-        CtClass ctClass = pool.makeClass(new FileInputStream(new File(project.sourceSets.main.output[0], 'SerializableClass.class')));
+        CtClass ctClass = pool.makeClass(new FileInputStream(project.file("$project.buildDir/serialver/SerializableClass.class")));
         ctClass
     }
 
     private CtClass getCompiledExceptionClass(Project project) {
         ClassPool pool = ClassPool.getDefault();
-        CtClass ctClass = pool.makeClass(new FileInputStream(new File(project.sourceSets.main.output[0], 'ExceptionClass.class')));
+        CtClass ctClass = pool.makeClass(new FileInputStream(project.file("$project.buildDir/serialver/ExceptionClass.class")));
         ctClass
     }
 }
