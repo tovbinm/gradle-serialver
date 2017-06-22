@@ -51,7 +51,8 @@ public class SerialVersionUIDTransformer extends ClassTransformer {
         this(serialVersionUIDValue, true, false, false);
     }
 
-    public SerialVersionUIDTransformer(long serialVersionUIDValue, boolean overwrite, boolean forceUIDOnException, boolean copyAll) {
+    public SerialVersionUIDTransformer(long serialVersionUIDValue, boolean overwrite, boolean forceUIDOnException,
+            boolean copyAll) {
         this.serialVersionUIDValue = serialVersionUIDValue;
         this.overwrite = overwrite;
         this.forceUIDOnException = forceUIDOnException;
@@ -70,7 +71,8 @@ public class SerialVersionUIDTransformer extends ClassTransformer {
 
                 if (!hasSerialVersionUIDField(clazz)) {
                     CtField field = new CtField(CtClass.longType, SERIALVERSIONUID_FIELD_NAME, clazz);
-                    field.setModifiers(javassist.Modifier.PUBLIC | javassist.Modifier.STATIC | javassist.Modifier.FINAL);
+                    field.setModifiers(javassist.Modifier.PUBLIC | javassist.Modifier.STATIC |
+                                       javassist.Modifier.FINAL);
                     if (forceUIDOnException && isException(clazz)) {
                         clazz.addField(field, javassist.CtField.Initializer.constant(1L));
                     } else {

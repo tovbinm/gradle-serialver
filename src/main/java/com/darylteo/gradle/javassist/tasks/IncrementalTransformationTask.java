@@ -25,9 +25,14 @@
  */
 package com.darylteo.gradle.javassist.tasks;
 
-import com.darylteo.gradle.javassist.transformers.GroovyClassTransformation;
-import groovy.lang.Closure;
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import javassist.build.IClassTransformer;
+
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.ConfigurableFileTree;
 import org.gradle.api.file.FileCollection;
@@ -35,12 +40,9 @@ import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.incremental.IncrementalTaskInputs;
 
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import com.darylteo.gradle.javassist.transformers.GroovyClassTransformation;
+
+import groovy.lang.Closure;
 
 
 /**
@@ -140,12 +142,10 @@ public class IncrementalTransformationTask extends DefaultTask {
         if (outOfDate.isEmpty()) {
             this.setDidWork(false);
         } else {
-            boolean workDone = new TransformationAction(
-                    this.getDestinationDir(),
-                    outOfDate,
-                    classPath,
-                    this.transformation
-            ).execute();
+            boolean workDone = new TransformationAction(this.getDestinationDir(),
+                                                        outOfDate,
+                                                        classPath,
+                                                        this.transformation).execute();
 
             this.setDidWork(workDone);
         }
