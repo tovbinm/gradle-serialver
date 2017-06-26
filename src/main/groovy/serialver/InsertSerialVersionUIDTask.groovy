@@ -22,7 +22,7 @@ public class InsertSerialVersionUIDTask extends IncrementalTransformationTask {
     InsertSerialVersionUIDTask() {
         dependsOn(project.classes)
         from(project.sourceSets.main.output.classesDir)
-        classpath += project.configurations.compile
+        classpath += project.configurations.compileClasspath
         project.jar.mustRunAfter(this)
     }
 

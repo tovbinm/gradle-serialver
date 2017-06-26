@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import javassist.build.IClassTransformer;
 
+import org.apache.log4j.Logger;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.ConfigurableFileTree;
 import org.gradle.api.file.FileCollection;
@@ -130,6 +131,7 @@ public class IncrementalTransformationTask extends DefaultTask {
         List<File> outOfDate = new LinkedList<>();
         inputs.outOfDate(inputFileDetails -> {
             if (sourceFiles.contains(inputFileDetails.getFile())) {
+                Logger.getLogger(getClass()).debug("On serialver classpath: " + inputFileDetails.getFile().getPath());
                 outOfDate.add(inputFileDetails.getFile());
             }
         });

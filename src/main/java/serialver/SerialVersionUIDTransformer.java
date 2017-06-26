@@ -33,6 +33,7 @@ import javassist.NotFoundException;
 import javassist.build.JavassistBuildException;
 
 import com.darylteo.gradle.javassist.transformers.ClassTransformer;
+import org.gradle.api.logging.Logging;
 
 
 public class SerialVersionUIDTransformer extends ClassTransformer {
@@ -87,9 +88,12 @@ public class SerialVersionUIDTransformer extends ClassTransformer {
 
     private boolean shouldModify(CtClass clazz) throws JavassistBuildException {
         try {
-            return isClass(clazz) && isSerializable(clazz);
+            boolean value = isClass(clazz) && isSerializable(clazz);
+            Logging.getLogger(getClass()).debug(clazz.getName() + " willTransform? " + value);
+            return value;
         } catch (NotFoundException e) {
             // throw new JavassistBuildException(e);
+            Logging.getLogger(getClass()).debug(clazz.getName() + " willTransform? threw exception: " + e.getMessage());
             return false;
         }
     }
