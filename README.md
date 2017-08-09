@@ -1,4 +1,5 @@
-# serialver-gradle [![Build Status](https://travis-ci.org/relateiq/gradle-serialver.svg?branch=master)](https://travis-ci.org/relateiq/gradle-serialver)
+# serialver-gradle
+[![Build Status](https://travis-ci.org/relateiq/gradle-serialver.svg?branch=master)](https://travis-ci.org/relateiq/gradle-serialver)
 
 A gradle task to insert/replace the `serialVersionUID` field in
 `Serializable` classes.
