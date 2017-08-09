@@ -32,8 +32,9 @@ import javassist.CtField;
 import javassist.NotFoundException;
 import javassist.build.JavassistBuildException;
 
-import com.darylteo.gradle.javassist.transformers.ClassTransformer;
 import org.gradle.api.logging.Logging;
+
+import com.darylteo.gradle.javassist.transformers.ClassTransformer;
 
 
 public class SerialVersionUIDTransformer extends ClassTransformer {
